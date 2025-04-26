@@ -2,8 +2,14 @@ const express = require("express");
 
 const app = express();
 
-app.use("/test", (req, res) => {
-  res.send("hi from /test");
+app.post("/test/:id/:name", (req, res) => {
+  console.log(req.params);
+  res.send(`the params are ${JSON.stringify(req.params)}`);
+});
+
+app.post("/test", (req, res) => {
+  console.log(req.query);
+  res.send(`the query is ${JSON.stringify(req.query)}`);
 });
 
 app.use((req, res) => {
