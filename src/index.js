@@ -1,21 +1,29 @@
 const express = require("express");
-
+const connectDB = require("./config/database.js");
+const User = require("./models/user");
 const app = express();
 
-app.post("/test/:id/:name", (req, res) => {
-  console.log(req.params);
-  res.send(`the params are ${JSON.stringify(req.params)}`);
+app.use(express.json());
+
+app.post("/signup", async (req, res) => {
+  //creating a new instance of user model
+  const user = new User(req.body);
+
+  try {
+    await user.save();
+    res.send("user added successfully");
+  } catch (err) {
+    res.status(400).send("error saving the data " + err.message);
+  }
 });
 
-app.post("/test", (req, res) => {
-  console.log(req.query);
-  res.send(`the query is ${JSON.stringify(req.query)}`);
-});
-
-app.use((req, res) => {
-  res.send("hi from server");
-});
-
-app.listen(3000, () => {
-  console.log("server started");
-});
+connectDB()
+  .then(() => {
+    console.log("database connection established");
+    app.listen(3000, () => {
+      console.log("server started");
+    });
+  })
+  .catch((err) => {
+    console.log("database cannot be connected");
+  });
