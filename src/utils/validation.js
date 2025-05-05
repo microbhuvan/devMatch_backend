@@ -3,6 +3,8 @@ const validator = require("validator");
 const validateSignUp = (req) => {
   const { firstName, lastName, emailId, password } = req.body;
 
+  console.log("req.body", req.body);
+
   if (!firstName || !lastName) {
     throw new Error("name is not valid");
   } else if (!validator.isEmail(emailId.trim())) {
@@ -24,9 +26,12 @@ const validateUserProfileData = (req) => {
   ];
 
   const isEditAllowed = Object.keys(req.body).every((field) => {
-    allowedEditFields.includes(field);
+    return allowedEditFields.includes(field);
   });
 
+  if (!isEditAllowed) {
+    throw new Error("Invalid fields in the request body");
+  }
   return isEditAllowed;
 };
 
