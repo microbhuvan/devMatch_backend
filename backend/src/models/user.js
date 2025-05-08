@@ -56,7 +56,8 @@ const userSchema = mongoose.Schema(
     },
     photoURL: {
       type: String,
-      default: "C:/Users/Mallikarjuna/Desktop/tinder_c/profileimg.png",
+      default:
+        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.freepik.com%2Ffree-photos-vectors%2Fprofile&psig=AOvVaw1SCCLqKzDyb5JmyFBrm40y&ust=1746771907510000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCKj_xcqek40DFQAAAAAdAAAAABAE",
       validate(value) {
         if (!validator.isURL(value) && !value.startsWith("C:/")) {
           throw new Error("error in loading image");

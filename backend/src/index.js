@@ -1,9 +1,17 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 //
 const connectDB = require("./config/database.js");
 const app = express();
 
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+  //{ withCredentials: true } in frontend axios call
+);
 app.use(express.json());
 app.use(cookieParser());
 
@@ -28,4 +36,4 @@ connectDB()
     console.log("database cannot be connected");
   });
 
-  //test
+//test
