@@ -57,10 +57,10 @@ const userSchema = mongoose.Schema(
     photoURL: {
       type: String,
       default:
-        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.freepik.com%2Ffree-photos-vectors%2Fprofile&psig=AOvVaw1SCCLqKzDyb5JmyFBrm40y&ust=1746771907510000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCKj_xcqek40DFQAAAAAdAAAAABAE",
+        "https://as2.ftcdn.net/jpg/02/22/39/63/1000_F_222396357_KlP0TQwV3X1U6rJWzlLcIpJ7ZLpxGcQR.jpg",
       validate(value) {
-        if (!validator.isURL(value) && !value.startsWith("C:/")) {
-          throw new Error("error in loading image");
+        if (!validator.isURL(value)) {
+          throw new Error("Invalid photo URL");
         }
       },
     },

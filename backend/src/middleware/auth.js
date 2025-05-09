@@ -6,7 +6,7 @@ const userAuth = async (req, res, next) => {
     const cookie = req.cookies;
     const { token } = cookie;
     if (!token) {
-      throw new Error("token is not valid");
+      return res.status(401).send("please login"); //401 means unauthorized
     }
 
     const userId = await jwt.verify(token, "PENGUIN@2024");
