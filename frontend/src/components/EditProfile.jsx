@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { BASE_URL } from "../utils/constants";
+//some changes
 
 const EditProfile = ({ user }) => {
   const [firstName, setFirstName] = useState("");
