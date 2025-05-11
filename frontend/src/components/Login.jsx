@@ -11,7 +11,9 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    console.log("testing handle login");
     try {
       const res = await axios.post(
         BASE_URL + "/login",
@@ -23,7 +25,8 @@ const Login = () => {
         //in backend cors({origin: "http://localhost:5173",
         //credentials: true,})
       );
-      console.log(res.data);
+      console.log("testing");
+      console.log(res);
       dispatch(addUser(res.data));
       return navigate("/");
     } catch (err) {
@@ -33,7 +36,7 @@ const Login = () => {
 
   return (
     <div className="card card-border bg-base-300 w-96 m-auto ">
-      <form>
+      <form onSubmit={handleLogin}>
         <div className="card-body">
           <h2 className="card-title">Login</h2>
           {/* this is for emailid input*/}
@@ -100,9 +103,7 @@ const Login = () => {
           At least one uppercase letter
         </p> */}
           <div className="card-actions justify-end">
-            <button className="btn btn-primary" onClick={handleLogin}>
-              Login
-            </button>
+            <button className="btn btn-primary">Login</button>
           </div>
         </div>
       </form>

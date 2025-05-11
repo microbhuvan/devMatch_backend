@@ -16,13 +16,17 @@ const UserCard = ({ user }) => {
             <div className="badge badge-secondary">NEW</div>
           </h2>
           <p>{user.about}</p>
-          <div className="card-actions">
-            {user.skills.map((skill) => (
-              <div key={skill} className="badge badge-outline badge-info">
-                {skill}
-              </div>
-            ))}
-          </div>
+          {user.skills?.length > 0 ? (
+            <div className="card-actions">
+              {user.skills.map((skill) => (
+                <div key={skill} className="badge badge-outline badge-info">
+                  {skill}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>no skills available</p>
+          )}
           <div className="flex justify-around"></div>
         </div>
       </div>
