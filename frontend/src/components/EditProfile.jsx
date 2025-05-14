@@ -44,6 +44,9 @@ const EditProfile = ({ user }) => {
       } catch (err) {
         console.log("Error in dispatch:", err);
       }
+      console.log("after set show toast");
+      setShowToast(true);
+      console.log("after set show toast");
     } catch (err) {
       setError(err.response);
     }
@@ -111,6 +114,12 @@ const EditProfile = ({ user }) => {
                     className="input input-bordered w-full max-w-xs"
                     onChange={(e) => setGender(e.target.value)}
                   />
+                  <input
+                    type="select"
+                    value="choose an option"
+                    className="input input-bordered w-full max-w-xs"
+                    onChange={(e) => setGender(e.target.value)}
+                  />
                 </label>
                 <label className="form-control w-full max-w-xs my-2">
                   <div className="label">
@@ -158,11 +167,8 @@ const EditProfile = ({ user }) => {
       </div>
       {showToast && (
         <div className="toast toast-top toast-center">
-          <div className="alert alert-info">
-            <span>New mail arrived.</span>
-          </div>
           <div className="alert alert-success">
-            <span>Message sent successfully.</span>
+            <span>Changes saved successfully</span>
           </div>
         </div>
       )}
