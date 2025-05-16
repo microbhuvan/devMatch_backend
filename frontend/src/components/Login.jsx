@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addUser, removeUser } from "../utils/userSlice";
+import { addUser } from "../utils/userSlice";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { useNavigate } from "react-router-dom";
@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [emailId, setEmailId] = useState("");
   const [password, setPassword] = useState("");
-  const [isNotLoginForm, setIsNotLoginForm] = useState(true);
+  const [isLoginForm, setIsLoginForm] = useState(true);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [error, setError] = useState("");
@@ -30,12 +30,10 @@ const Login = () => {
         //in backend cors({origin: "http://localhost:5173",
         //credentials: true,})
       );
-      console.log("testing");
-      console.log(res);
       dispatch(addUser(res.data));
       return navigate("/");
     } catch (err) {
-      console.log("axios post login" + err);
+      setError(err?.response?.data || "something went wrong");
     }
   };
 
@@ -46,7 +44,9 @@ const Login = () => {
         { firstName, lastName, emailId, password },
         { withCredentials: true }
       );
-      dispatch(addUser(res.data.data));
+      console.log(res.data);
+      console.log(res.data.data);
+      dispatch(addUser(res.data));
       return navigate("/profile");
     } catch (err) {
       setError(err?.response?.data || "something went wrong");
@@ -58,10 +58,10 @@ const Login = () => {
       <div className="card bg-base-300 w-96 shadow-xl">
         <div className="card-body">
           <h2 className="card-title justify-center">
-            {isNotLoginForm ? "Sign Up" : "Login"}
+            {isLoginForm ? "Login" : "Sign Up"}
           </h2>
           <div>
-            {isNotLoginForm && (
+            {!isLoginForm && (
               <>
                 <label className="form-control w-full max-w-xs my-2">
                   <div className="label">
@@ -114,18 +114,18 @@ const Login = () => {
           <div className="card-actions justify-center m-2">
             <button
               className="btn btn-primary"
-              onClick={isNotLoginForm ? handleSignUp : handleLogin}
+              onClick={isLoginForm ? handleLogin : handleSignUp}
             >
-              {isNotLoginForm ? "Sign Up" : "Login"}
+              {isLoginForm ? "Login" : "Sign Up"}
             </button>
           </div>
           <p
             className="m-auto cursor-pointer py-2"
-            onClick={() => setIsNotLoginForm((value) => !value)}
+            onClick={() => setIsLoginForm((value) => !value)}
           >
-            {isNotLoginForm
-              ? "Existing User? Login Here"
-              : "New User? Signup Here"}
+            {isLoginForm
+              ? "New User? Signup Here"
+              : "Existing User? Login Here"}
           </p>
         </div>
       </div>

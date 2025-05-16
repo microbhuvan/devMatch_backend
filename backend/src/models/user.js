@@ -46,13 +46,15 @@ const userSchema = mongoose.Schema(
     },
     gender: {
       type: String,
-      enum: ["male", "female", "other"], // Directly specify the allowed values
-      validate: {
-        validator: function (value) {
-          return ["male", "female", "other"].includes(value);
-        },
-        message: (props) => `${props.value} is not a valid gender type`, // Dynamic error message
-      },
+      // enum: ["male", "female", "other"], // Directly specify the allowed values
+      // validate: {
+      //   validator: function (value) {
+      //     return ["male", "female", "other"].includes(value);
+      //   },
+      //   message: (props) => `${props.value} is not a valid gender type`, // Dynamic error message
+      // },
+      enum: ["male", "female", "other"],
+      default: "other",
     },
     photoURL: {
       type: String,

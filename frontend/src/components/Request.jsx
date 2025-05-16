@@ -11,7 +11,7 @@ const Request = () => {
   const reviewRequest = async (status, _id) => {
     try {
       const res = await axios.post(
-        BASE_URL + "/request/review" + status + "/" + _id,
+        BASE_URL + "/request/review/" + status + "/" + _id,
         {},
         { withCredentials: true }
       );
@@ -36,27 +36,39 @@ const Request = () => {
   if (requests.length === 0) return <h1>no requests found</h1>;
   return (
     <div>
-      <h1>hi from </h1>
+      <h1 className="text-center">Requests </h1>
       {requests.map((request) => {
         const { _id, firstName, lastName, photoURL, age, gender, about } =
           request.fromUserId;
 
         return (
-          <div key={_id}>
+          <div
+            key={_id}
+            className="flex justify-between items-center m-4 p-4 rounded-lg bg-base-300 mx-auto"
+          >
             <div>
-              <img alt="photo" src={photoURL} />
+              <img
+                alt="photo"
+                className="w-20 h-20 rounded-full object-cover"
+                src={photoURL}
+              />
             </div>
 
-            <div>
+            <div className="text-left mx-4">
               <h2>{firstName + " " + lastName}</h2>
               {age && gender && <p>{age + ", " + gender}</p>}
-              <p>about</p>
             </div>
             <div>
-              <button onClick={() => reviewRequest("rejected", request._id)}>
+              <button
+                className="btn btn-primary mx-2"
+                onClick={() => reviewRequest("rejected", request._id)}
+              >
                 Reject
               </button>
-              <button onClick={() => reviewRequest("accepted", request._id)}>
+              <button
+                className="btn btn-secondary mx-2"
+                onClick={() => reviewRequest("accepted", request._id)}
+              >
                 Accept
               </button>
             </div>

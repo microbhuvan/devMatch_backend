@@ -12,7 +12,7 @@ const EditProfile = ({ user }) => {
   const [gender, setGender] = useState(user.gender);
   const [photoURL, setPhotoURL] = useState(user.photoURL);
   const [age, setAge] = useState(user.age || 0);
-  const [about, setAbout] = useState(user.about);
+  const [about, setAbout] = useState(user.about || "");
   const [skills, setSkills] = useState(user.skills?.join(", ") || "");
   const [error, setError] = useState("");
   const [showToast, setShowToast] = useState(false);
@@ -22,6 +22,10 @@ const EditProfile = ({ user }) => {
   const saveProfile = async () => {
     console.log("save profile called");
     setError("");
+    if (!gender) {
+      setError("please select gender");
+      return;
+    }
     try {
       const res = await axios.patch(
         BASE_URL + "/profile/edit",
@@ -39,16 +43,18 @@ const EditProfile = ({ user }) => {
       console.log("axios patch working");
       try {
         console.log("Before dispatch");
-        dispatch(addUser(res.data));
+        console.log("Res.data", res.data.data);
+        console.log("Res.data.data", res.data.data);
+        dispatch(addUser(res.data.data));
         console.log("After dispatch");
       } catch (err) {
         console.log("Error in dispatch:", err);
       }
-      console.log("after set show toast");
+      console.log("before set show toast");
       setShowToast(true);
       console.log("after set show toast");
     } catch (err) {
-      setError(err.response);
+      setError(err.response?.data || err.message || "unknown error");
     }
   };
 
@@ -108,18 +114,22 @@ const EditProfile = ({ user }) => {
                   <div className="label">
                     <span className="label-text">Gender</span>
                   </div>
-                  <input
-                    type="text"
+                  <select
                     value={gender}
                     className="input input-bordered w-full max-w-xs"
                     onChange={(e) => setGender(e.target.value)}
-                  />
-                  <input
+                  >
+                    <option value="">select gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                  {/* <input
                     type="select"
                     value="choose an option"
                     className="input input-bordered w-full max-w-xs"
                     onChange={(e) => setGender(e.target.value)}
-                  />
+                  /> */}
                 </label>
                 <label className="form-control w-full max-w-xs my-2">
                   <div className="label">

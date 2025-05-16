@@ -20,6 +20,7 @@ const validateUserProfileData = (req) => {
     "lastName",
     "emailId",
     "about",
+    "gender",
     "skills",
     "age",
     "photoURL",

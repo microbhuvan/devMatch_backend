@@ -25,7 +25,9 @@ const Navbar = () => {
     <>
       <div className="navbar bg-base-100 shadow-sm">
         <div className="flex-1">
-          <a className="btn btn-ghost text-xl">DevMatch</a>
+          <a className="btn btn-ghost text-xl" href="/">
+            DevMatch
+          </a>
         </div>
         {user && (
           <div className="flex gap-2">
@@ -58,7 +60,6 @@ const Navbar = () => {
                 <li>
                   <Link to="/profile" className="justify-between">
                     Profile
-                    <span className="badge">New</span>
                   </Link>
                 </li>
                 <li>
