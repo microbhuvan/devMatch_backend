@@ -12,6 +12,7 @@ const Login = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -102,12 +103,21 @@ const Login = () => {
               <div className="label">
                 <span className="label-text">Password</span>
               </div>
-              <input
-                type="password"
-                value={password}
-                className="input input-bordered w-full max-w-xs"
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  className="input input-bordered w-full max-w-xs"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <button
+                  type="button"
+                  className="absolute right-7 top-1/2 -translate-y-1/2 z-10"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                >
+                  {showPassword ? "Hide" : "Show"}
+                </button>
+              </div>
             </label>
           </div>
           <p className="text-red-500">{error}</p>
