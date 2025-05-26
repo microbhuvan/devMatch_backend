@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
+require("dotenv").config();
 
 const userAuth = async (req, res, next) => {
   try {
@@ -9,7 +10,7 @@ const userAuth = async (req, res, next) => {
       return res.status(401).send("please login"); //401 means unauthorized
     }
 
-    const userId = await jwt.verify(token, "PENGUIN@2024");
+    const userId = await jwt.verify(token, process.env.JWT_SECRET);
     const { id } = userId;
     //because userId returns iat and exp value
 
