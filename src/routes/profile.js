@@ -34,11 +34,23 @@ profileRouter.get("/profile/view", userAuth, async (req, res) => {
 
 profileRouter.patch("/profile/changepassword", userAuth, async (req, res) => {
   try {
-    const { emailId, newPassword } = req.body;
+    const { emailId } = req.user;
+    const { newPassword, newPassword2 } = req.body;
+
+    if (!newPassword || !newPassword2) {
+      return res.status(400).send("password fields cant be empty");
+    }
+
+    if (newPassword !== newPassword2) {
+      return res.status(400).send("password does not match");
+    }
+
     const user = await User.findOne({ emailId: emailId });
     if (user) {
       const newHashedPassword = await bcrypt.hash(newPassword, 10);
       user.password = newHashedPassword;
+      await user.save();
+
       res.send("password updated successfully");
     } else {
       throw new Error("user not found");

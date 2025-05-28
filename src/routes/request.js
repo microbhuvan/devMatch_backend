@@ -4,6 +4,7 @@ const { userAuth } = require("../middleware/auth.js");
 const { connection } = require("mongoose");
 const connectionRequestModel = require("../models/connectionRequest");
 const User = require("../models/user.js");
+const sendEmail = require("../utils/sendEmail");
 
 requestRouter.post(
   "/request/send/:status/:toUserId",
@@ -47,6 +48,13 @@ requestRouter.post(
       });
 
       const data = await connectionRequest.save();
+
+      // const emailRes = await sendEmail.run(
+      //   "A new friend request from " + req.user.firstName,
+      //   req.user.firstName + " is " + status + " in " + toUser.firstName
+      // ); //email sending
+      // console.log(emailRes);
+
       res.json({
         message: `${req.user.firstName} is intersted in ${toUser.firstName}`,
         data,
