@@ -31,7 +31,7 @@ requestRouter.post(
         ],
       });
 
-      console.log(existingConnectionReq);
+      //console.log(existingConnectionReq);
       if (existingConnectionReq) {
         return res.status(400).json({ message: "connection already exists" });
       }

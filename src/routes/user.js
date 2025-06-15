@@ -81,11 +81,11 @@ userRouter.get("/feed", userAuth, async (req, res) => {
       })
       .select("fromUserId toUserId");
 
-    console.log(connectionRequest);
+    //console.log(connectionRequest);
 
     const connectionSet = new Set(); //hiding the users
     connectionRequest.map((row) => {
-      console.log(row);
+      //console.log(row);
       connectionSet.add(row.fromUserId.toString()); //converts object ids to string
       connectionSet.add(row.toUserId.toString());
     });
