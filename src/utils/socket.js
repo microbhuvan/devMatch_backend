@@ -27,15 +27,15 @@ const initializeSocket = (server) => {
 
     socket.on(
       "sendMessage",
-      async ({ firstName, userId, targetUserId, text }) => {
-        const roomId = getSecretRoomId(userId, targetUserId);
-        console.log(firstName + " " + text);
-
+      async ({ firstName, lastName, userId, targetUserId, text }) => {
         try {
-          const userObjId = mongoose.Types.ObjectId(userId);
-          const targetUserObjId = mongoose.Types.ObjectId(targetUserId);
+          const roomId = getSecretRoomId(userId, targetUserId);
+          console.log(firstName + " " + text);
+
+          //const userObjId = mongoose.Types.ObjectId(userId);
+          //const targetUserObjId = mongoose.Types.ObjectId(targetUserId);
           let chat = await Chat.findOne({
-            participants: { $all: [userObjId, targetUserObjId] },
+            participants: { $all: [userId, targetUserId] },
           });
 
           if (!chat) {
@@ -47,11 +47,10 @@ const initializeSocket = (server) => {
           chat.messages.push({ senderId: userId, text });
 
           await chat.save();
+          io.to(roomId).emit("messageReceived", { firstName, text });
         } catch (err) {
           console.log(err);
         }
-
-        io.to(roomId).emit("messageReceived", { firstName, text });
       }
     );
     socket.on("disconnect", () => {});
