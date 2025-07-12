@@ -4,24 +4,64 @@ const { userAuth } = require("../middleware/auth.js");
 const { validateUserProfileData } = require("../utils/validation.js");
 const { User } = require("../models/user");
 const bcrypt = require("bcrypt");
+const upload = require("../utils/multer.js");
 
-profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
-  try {
-    validateUserProfileData(req);
-    const loggedInUser = req.user;
+profileRouter.patch(
+  "/profile/edit",
+  userAuth,
+  upload.single("photo"),
+  async (req, res) => {
+    console.log("Route hit");
 
-    Object.keys(req.body).forEach((key) => {
-      loggedInUser[key] = req.body[key];
-    });
+    try {
+      console.log("req.body", req.body);
+      console.log("req.file", req.file);
 
-    console.log(loggedInUser);
-    await loggedInUser.save();
+      validateUserProfileData(req);
+      const loggedInUser = req.user;
 
-    res.json({ message: "Profile updated successfully", data: loggedInUser });
-  } catch (err) {
-    res.status(400).send("something went wrong: " + err.message);
+      Object.keys(req.body).forEach((key) => {
+        if (key === "skills" && req.body.skills) {
+          loggedInUser.skills = req.body.skills
+            .split(",")
+            .map((skill) => skill.trim())
+            .filter((skill) => skill.length > 0);
+        } else {
+          loggedInUser[key] = req.body[key];
+        }
+      });
+
+      if (req.file && req.file.path) {
+        console.log("New photo uploaded, updating...");
+        if (loggedInUser.photoPublicId) {
+          console.log(
+            "Deleting old Cloudinary photo:",
+            loggedInUser.photoPublicId
+          );
+          try {
+            await cloudinary.uploader.destroy(loggedInUser.photoPublicId);
+            console.log("Old photo deleted successfully.");
+          } catch (err) {
+            console.log("Error deleting old photo:", err.message);
+          }
+        }
+
+        loggedInUser.photoURL = req.file.path;
+        loggedInUser.photoPublicId = req.file.filename;
+      }
+
+      console.log("Before save:", loggedInUser);
+      await loggedInUser.save();
+      console.log("After save");
+
+      res.json({ message: "Profile updated successfully", data: loggedInUser });
+      console.log("Response sent to client");
+    } catch (err) {
+      console.error("Error in /profile/edit:", err);
+      res.status(400).send("something went wrong: " + err.message);
+    }
   }
-});
+);
 
 profileRouter.get("/profile/view", userAuth, async (req, res) => {
   try {

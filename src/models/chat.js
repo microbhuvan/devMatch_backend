@@ -24,3 +24,25 @@ const chatSchema = new mongoose.Schema({
 
 const Chat = mongoose.model("Chat", chatSchema);
 module.exports = { Chat };
+
+/*
+{
+  _id: ObjectId("..."),
+  participants: [ObjectId("user1"), ObjectId("user2")],
+  messages: [
+    {
+      senderId: ObjectId("user1"),
+      text: "Hey!",
+      createdAt: ..., // automatically added by timestamps
+      updatedAt: ...
+    },
+    {
+      senderId: ObjectId("user2"),
+      text: "Hello!",
+      createdAt: ...,
+      updatedAt: ...
+    }
+  ]
+}
+
+*/

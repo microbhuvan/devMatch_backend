@@ -66,6 +66,9 @@ const userSchema = mongoose.Schema(
         }
       },
     },
+    photoPublicId: {
+      type: String,
+    },
     about: {
       type: String,
       default: "this is default about user",
