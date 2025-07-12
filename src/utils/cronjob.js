@@ -1,9 +1,10 @@
+require("dotenv").config();
 const cron = require("node-cron");
 const { subDays, startOfDay, endOfDay } = require("date-fns");
 const sendEmail = require("./sendEmail");
 const connectionRequestModel = require("../models/connectionRequest");
 
-cron.schedule("36 18 * * *", async () => {
+cron.schedule("0 8 * * *", async () => {
   // every day at 8 am
   try {
     //first categorize the yesterday by setting starting time and ending time
@@ -36,8 +37,9 @@ cron.schedule("36 18 * * *", async () => {
     for (const email of listOfEmails) {
       try {
         const res = await sendEmail.run(
-          "New Friend Requests pending for " + email, //subject
-          "Pending requests. Login to accept or reject them" //body
+          "New Friend Requests pending for " + email,
+          "Pending requests. Login to accept or reject them.",
+          email // passing recipient explicitly
         );
         console.log(res);
       } catch (err) {
