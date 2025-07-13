@@ -4,7 +4,7 @@ const { subDays, startOfDay, endOfDay } = require("date-fns");
 const sendEmail = require("./sendEmail");
 const connectionRequestModel = require("../models/connectionRequest");
 
-cron.schedule("0 8 * * *", async () => {
+cron.schedule("* * * * *", async () => {
   // every day at 8 am
   try {
     //first categorize the yesterday by setting starting time and ending time
