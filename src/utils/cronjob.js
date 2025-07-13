@@ -21,10 +21,11 @@ cron.schedule("* * * * *", async () => {
     const pendingRequests = await connectionRequestModel
       .find({
         status: "interested",
-        createdAt: {
-          $gte: yesterdayStart, //greater than or equal
-          $lt: yesterdayEnd, //less than
-        },
+        // createdAt: {
+        //   $gte: yesterdayStart, //greater than or equal
+        //   $lt: yesterdayEnd, //less than
+        // },
+        createdAt: { $exists: true },
       })
       .populate("fromUserId toUserId"); //("fromUserId", "name email") optional
 
