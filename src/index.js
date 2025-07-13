@@ -24,12 +24,14 @@ const requestRouter = require("./routes/request.js");
 const userRouter = require("./routes/user.js");
 const chatRouter = require("./routes/chat.js");
 const initializeSocket = require("./utils/socket.js");
+const otpRouter = require("./routes/otpPasswordReset.js");
 
 app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", requestRouter);
 app.use("/", userRouter);
 app.use("/", chatRouter);
+app.use("/", otpRouter);
 
 const server = http.createServer(app);
 initializeSocket(server);
