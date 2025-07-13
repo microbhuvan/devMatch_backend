@@ -4,8 +4,11 @@ const { subDays, startOfDay, endOfDay } = require("date-fns");
 const sendEmail = require("./sendEmail");
 const connectionRequestModel = require("../models/connectionRequest");
 
-cron.schedule("* * * * *", async () => {
-  // every day at 8 am
+cron.schedule("30 10 * * *", async () => {
+  // every day at 10:30 am
+  // console.log("testing");
+  // console.log("CRON JOB TRIGGERED:", new Date().toISOString());
+
   try {
     //first categorize the yesterday by setting starting time and ending time
     console.log("cron job");
@@ -21,13 +24,24 @@ cron.schedule("* * * * *", async () => {
     const pendingRequests = await connectionRequestModel
       .find({
         status: "interested",
-        // createdAt: {
-        //   $gte: yesterdayStart, //greater than or equal
-        //   $lt: yesterdayEnd, //less than
-        // },
-        createdAt: { $exists: true },
+        createdAt: {
+          $gte: yesterdayStart, //greater than or equal
+          $lt: yesterdayEnd, //less than
+        },
       })
       .populate("fromUserId toUserId"); //("fromUserId", "name email") optional
+
+    // console.log(
+    //   "Pending requests found:",
+    //   pendingRequests.length,
+    //   pendingRequests
+    // );
+
+    // console.log("pendingRequests length:", pendingRequests.length);
+    // console.log(
+    //   "pendingRequests data:",
+    //   JSON.stringify(pendingRequests, null, 2)
+    // );
 
     //from each object extract only email and use set for unique data
     const listOfEmails = [
