@@ -46,12 +46,17 @@ git clone https://github.com/microbhuvan/devMatch_backend.git
 cd devMatch_backend
 ```
 
-2️⃣ Install dependencies
-npm install
+### 2️⃣ Install dependencies
 
-3️⃣ Create a .env file
+```bash
+npm install
+```
+
+### 3️⃣ Create a .env file
+
 Add your environment variables:
 
+```bash
 PORT=5000
 MONGO_URL=<your-mongo-db-uri>
 JWT_SECRET=<your-jwt-secret>
@@ -59,6 +64,10 @@ RESEND_API_KEY=<your-resend-api-key>
 CLOUDINARY_CLOUD_NAME=<your-cloudinary-cloud-name>
 CLOUDINARY_API_KEY=<your-cloudinary-api-key>
 CLOUDINARY_API_SECRET=<your-cloudinary-api-secret>
+```
 
-4️⃣ Run the server locally
+### 4️⃣ Run the server locally
+
+```bash
 npm start
+```
