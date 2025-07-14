@@ -2,7 +2,7 @@ const express = require("express");
 const profileRouter = express.Router();
 const { userAuth } = require("../middleware/auth.js");
 const { validateUserProfileData } = require("../utils/validation.js");
-const { User } = require("../models/user");
+const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const upload = require("../utils/multer.js");
 
@@ -86,11 +86,12 @@ profileRouter.patch("/profile/changepassword", userAuth, async (req, res) => {
     }
 
     const user = await User.findOne({ emailId: emailId });
+
     if (user) {
       const newHashedPassword = await bcrypt.hash(newPassword, 10);
       user.password = newHashedPassword;
       await user.save();
-
+      console.log(user);
       res.send("password updated successfully");
     } else {
       throw new Error("user not found");
