@@ -21,7 +21,7 @@ otpRouter.post("/request-reset-otp", async (req, res) => {
     }
 
     const otp = generateOTP();
-    const expiresAt = Date.now() + 10 * 60 * 1000;
+    const expiresAt = Date.now() + 10 * 60 * 1000; //10 mins from now
     await OTP.create({ emailId, otp, expiresAt, isUsed: false });
 
     await resend.emails.send({

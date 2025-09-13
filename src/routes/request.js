@@ -49,11 +49,18 @@ requestRouter.post(
 
       const data = await connectionRequest.save();
 
-      // const emailRes = await sendEmail.run(
-      //   "A new friend request from " + req.user.firstName,
-      //   req.user.firstName + " is " + status + " in " + toUser.firstName
-      // ); //email sending
-      // console.log(emailRes);
+      // Send email notification to the recipient
+      try {
+        const emailRes = await sendEmail.run(
+          "A new friend request from " + req.user.firstName,
+          req.user.firstName + " is " + status + " in " + toUser.firstName,
+          toUser.emailId // recipient's email
+        );
+        console.log("Email sent successfully:", emailRes);
+      } catch (emailError) {
+        console.error("Failed to send email:", emailError);
+        // Don't fail the request if email fails, just log the error
+      }
 
       res.json({
         message: `${req.user.firstName} is intersted in ${toUser.firstName}`,
@@ -99,6 +106,24 @@ requestRouter.post(
       connectionRequest.status = status;
 
       const data = await connectionRequest.save();
+
+      // Send email notification to the requester about the response
+      try {
+        const fromUser = await User.findOne({
+          _id: connectionRequest.fromUserId,
+        });
+        if (fromUser) {
+          const emailRes = await sendEmail.run(
+            `Your friend request has been ${status}`,
+            `Your friend request to ${loggedInUser.firstName} has been ${status}.`,
+            fromUser.emailId
+          );
+          console.log("Response email sent successfully:", emailRes);
+        }
+      } catch (emailError) {
+        console.error("Failed to send response email:", emailError);
+        // Don't fail the request if email fails, just log the error
+      }
 
       res.json({ message: `connection request ${status}`, data });
     } catch (err) {

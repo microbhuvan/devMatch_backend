@@ -10,7 +10,9 @@ const validateSignUp = (req) => {
   } else if (!validator.isEmail(emailId.trim())) {
     throw new Error("email is not valid");
   } else if (!validator.isStrongPassword(password)) {
-    throw new Error("password is not valid");
+    throw new Error(
+      "Password must contain at least 8 characters, including 1 lowercase, 1 uppercase, 1 number, and 1 special character."
+    );
   }
 };
 
@@ -26,6 +28,9 @@ const validateUserProfileData = (req) => {
     "photoURL",
   ];
 
+  //Object.keys gives all the keys as an elements of array [key1,key2]
+  //every means all the elements in the array must pass the condition [value1,value2]
+  //object.values for values and object.entries for key value [[key,value],[key,value]]
   const isEditAllowed = Object.keys(req.body).every((field) => {
     return allowedEditFields.includes(field);
   });

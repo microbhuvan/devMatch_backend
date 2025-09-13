@@ -5,6 +5,7 @@ const { validateUserProfileData } = require("../utils/validation.js");
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const upload = require("../utils/multer.js");
+const { cloudinary } = require("../utils/cloudinary.js");
 
 profileRouter.patch(
   "/profile/edit",
@@ -42,7 +43,7 @@ profileRouter.patch(
             await cloudinary.uploader.destroy(loggedInUser.photoPublicId);
             console.log("Old photo deleted successfully.");
           } catch (err) {
-            console.log("Error deleting old photo:", err.message);
+            throw new Error("Error deleting old photo:", err.message);
           }
         }
 
@@ -68,7 +69,7 @@ profileRouter.get("/profile/view", userAuth, async (req, res) => {
     const user = req.user;
     res.send(user);
   } catch (err) {
-    res.status(400).send("something went wrong: " + err.message);
+    return res.status(400).send("something went wrong: " + err.message);
   }
 });
 
@@ -92,12 +93,12 @@ profileRouter.patch("/profile/changepassword", userAuth, async (req, res) => {
       user.password = newHashedPassword;
       await user.save();
       console.log(user);
-      res.send("password updated successfully");
+      return res.status(200).send("password updated successfully");
     } else {
       throw new Error("user not found");
     }
   } catch (err) {
-    res.status(400).send("something went wrong: " + err.message);
+    return res.status(500).send("something  went wrong: " + err.message);
   }
 });
 

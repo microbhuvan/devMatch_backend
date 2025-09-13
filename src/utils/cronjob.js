@@ -11,14 +11,14 @@ cron.schedule("30 10 * * *", async () => {
 
   try {
     //first categorize the yesterday by setting starting time and ending time
-    console.log("cron job");
+    //console.log("cron job");
     const yesterday = subDays(new Date(), 1);
-    console.log(yesterday);
+    //console.log(yesterday);
 
     const yesterdayStart = startOfDay(yesterday);
-    console.log(yesterdayStart);
+    //console.log(yesterdayStart);
     const yesterdayEnd = endOfDay(yesterday);
-    console.log(yesterdayEnd);
+    //console.log(yesterdayEnd);
 
     //take list of all interested status that have been created in yesterday's timeframe
     const pendingRequests = await connectionRequestModel
@@ -47,7 +47,7 @@ cron.schedule("30 10 * * *", async () => {
     const listOfEmails = [
       ...new Set(pendingRequests.map((req) => req.toUserId.emailId)),
     ];
-    console.log(listOfEmails);
+    //console.log(listOfEmails);
 
     for (const email of listOfEmails) {
       try {
@@ -56,9 +56,9 @@ cron.schedule("30 10 * * *", async () => {
           "Pending requests. Login to accept or reject them.",
           email // passing recipient explicitly
         );
-        console.log(res);
+        // console.log(res);
       } catch (err) {
-        console.log(err);
+        //console.log(err);
       }
     }
   } catch (err) {

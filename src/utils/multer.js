@@ -1,6 +1,6 @@
 const multer = require("multer");
 const { cloudinary } = require("./cloudinary");
-const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const { CloudinaryStorage } = require("multer-storage-cloudinary"); //saves files directly to cloudinary instead of loacal storage
 
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
